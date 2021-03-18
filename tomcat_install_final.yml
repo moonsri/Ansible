@@ -1,0 +1,29 @@
+---
+- hosts: webserver
+  tasks:
+    - name: Install tomcat tomcat-webapps tomcat-admin-webapps tomcat-docs-webapp
+      yum:
+        name: [tomcat, tomcat-webapps, tomcat-admin-webapps, tomcat-docs-webapp]
+        state: installed
+
+    - name: Start the tomcat service
+      service:
+        name: tomcat
+        state: started
+
+    - name: Check the presence of tomcat-usr.xml
+      stat: 
+        path: /usr/share/tomcat/conf/tomcat-users.xml
+      register: tomcat_config
+
+    - debug:
+        var: tomcat_config      
+    
+    - name: Update tomcat-usr.xml file
+      replace:
+        path: /usr/share/tomcat/conf/tomcat-users.xml
+        regexp: '^<!-- <user name="admin" password="adminadmin" roles="admin,manager,admin-gui,admin-script,manager-gui,manager-script,manager-jmx,manager-status" /> -->'
+        replace: '<user name="admin" password="adminadmin" roles="admin,manager,admin-gui,admin-script,manager-gui,manager-script,manager-jmx,manager-status" />'
+      when: tomcat_config.stat.exists == true
+...
+

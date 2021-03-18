@@ -1,0 +1,12 @@
+---
+# tasks file for apache
+
+- name: Reconfigure httpd port
+  template:
+    src: httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+
+  notify: 
+    - Restart apache  
+...
+

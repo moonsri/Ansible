@@ -1,0 +1,19 @@
+---
+- hosts: webserver
+  
+  tasks:
+   - name: Install tomcat tomcat-webapps tomcat-admin-webapps tomcat-docs-webapp
+     yum:
+       name: tomcat
+       state: installed
+   - name: Update tomcat-usr.xml file
+     replace:
+       path: /usr/share/tomcat/conf/tomcat-users.xml
+       regexp: '^<!-- <user name.*'
+       replace: '<user name.*'
+   - name: Start the tomcat service
+     service:
+       name: tomcat
+       state: started
+...
+

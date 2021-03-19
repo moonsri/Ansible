@@ -13,8 +13,8 @@
         name: httpd
         state: started
 
-    - name: create an index file
-      copy:
-        src: index.html
-        dest: /var/www/html/index.html
+#    - name: create an index file
+ #     copy:
+ #       src: index.html
+ #       dest: /var/www/html/index.html
 ...
